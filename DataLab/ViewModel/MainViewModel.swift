@@ -7,40 +7,108 @@
 
 import Foundation
 
+enum Database {
+    case local
+    case swiftData
+    case realm
+}
+
+protocol ServiceDelegate: AnyObject {
+    func didUpdatePersons()
+}
+
 @Observable
 final class MainViewModel {
     typealias Person = PersonModel.Person
 
+    var database: Database = .realm
     var personModel: PersonModel = PersonModel()
+    var service: ServiceProtocol?
 
-    var persons: [Person] = []
+    private var personsLocal: [Person] = [] {
+        didSet { persons = personsLocal }
+    }
+    private var personsService: [Person] = [] {
+        didSet { persons = personsService }
+    }
+    private(set) var persons: [Person] = []
+
+    init() {
+        serviceDeploy()
+        delegateDeploy()
+        personsService = service?.fetchAllPersons() ?? []
+    }
+
+    // MARK: Public Methods
 
     func addNewPerson() {
-        persons.append(getNewPerson())
+        let newPerson = personModel.generateRandom()
+        switch database {
+        case .local: addNewPersonLocal(to: newPerson)
+        case .realm, .swiftData: addNewPersonService(to: newPerson)
+        }
     }
 
     func removePerson(at person: Person) {
-        removePersonLocal(at: person)
+        switch database {
+        case .local: removePersonLocal(at: person)
+        case .realm, .swiftData: removePersonService(at: person)
+        }
     }
 
     func editPerson(_ person: Person) {
-        editPersonLocal(person)
+        switch database {
+        case .local: editPersonLocal(person)
+        case .realm, .swiftData: editPersonService(person)
+        }
     }
 
+    // MARK: Service
+
+    private func serviceDeploy() {
+        service = RealmService()
+    }
+
+    // MARK: Private Methods
+
     private func removePersonLocal(at person: Person) {
-        guard let index = persons.firstIndex(of: person) else { return }
-        persons.remove(at: index)
+        guard let index = personsLocal.firstIndex(of: person) else { return }
+        personsLocal.remove(at: index)
     }
 
     private func editPersonLocal(_ person: Person) {
-        guard let index = persons.firstIndex(of: person) else { return }
+        guard let index = personsLocal.firstIndex(of: person) else { return }
 
-        persons[index] = personModel.mutate(person)
+        personsLocal[index] = personModel.mutate(person)
     }
 
-    private func getNewPerson() -> Person {
-        personModel.generateRandom()
+    private func addNewPersonLocal(to person: Person){
+        personsLocal.append(person)
     }
 
+    // MARK: Service
 
+    private func removePersonService(at person: Person) {
+        service?.delete(person)
+    }
+
+    private func editPersonService(_ person: Person) {
+        let newPerson = personModel.mutate(person)
+        service?.update(newPerson)
+    }
+
+    private func addNewPersonService(to person: Person){
+        service?.save(person)
+    }
+
+    private func delegateDeploy() {
+        service?.delegate = self
+    }
+}
+
+extension MainViewModel: ServiceDelegate {
+    func didUpdatePersons() {
+        print("Обновляюсь")
+        personsService = service?.fetchAllPersons() ?? []
+    }
 }

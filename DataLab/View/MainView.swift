@@ -26,15 +26,15 @@ struct MainView: View {
                 VStack {
                     HStack {
                         Text(person.name)
-                        Text(person.age.description)
+                        Text(person.age?.description ?? "000")
                         Spacer()
                         Circle()
-                            .foregroundColor(person.isStudent ? .green : .blue)
+                            .foregroundColor(person.isStudent == nil ? .black : person.isStudent! ? .green : .blue)
                             .frame(width: 20, height: 20)
                     }
                     HStack {
-                        Text(person.birthday, format: .dateTime.day(.twoDigits).month(.twoDigits).year())
-                        Text(person.planet.rawValue)
+                        Text(person.birthday ?? Date(), format: .dateTime.day(.twoDigits).month(.twoDigits).year())
+                        Text(person.planet?.rawValue ?? "000")
                         Spacer()
 
                     }

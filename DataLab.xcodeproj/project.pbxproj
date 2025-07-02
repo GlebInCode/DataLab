@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F7D5545E2E152CD000A83F32 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F7D5545D2E152CD000A83F32 /* RealmSwift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		F70D92592E1410E500A1F388 /* DataLab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DataLab.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F7D5545E2E152CD000A83F32 /* RealmSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = DataLab;
 			packageProductDependencies = (
+				F7D5545D2E152CD000A83F32 /* RealmSwift */,
 			);
 			productName = DataLab;
 			productReference = F70D92592E1410E500A1F388 /* DataLab.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = F70D92502E1410E500A1F388;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F7D5545C2E152CD000A83F32 /* XCRemoteSwiftPackageReference "realm-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = F70D925A2E1410E500A1F388 /* Products */;
 			projectDirPath = "";
@@ -324,6 +333,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F7D5545C2E152CD000A83F32 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F7D5545D2E152CD000A83F32 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F7D5545C2E152CD000A83F32 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F70D92512E1410E500A1F388 /* Project object */;
 }
