@@ -11,11 +11,11 @@ struct PersonModel {
 
     struct Person: Identifiable, Equatable {
         var name: String
-        var age: Int
-        var link: URL
-        var birthday: Date
-        var isStudent: Bool
-        var planet: Planet
+        var age: Int?
+        var link: URL?
+        var birthday: Date?
+        var isStudent: Bool?
+        var planet: Planet?
 
         var id: UUID = UUID()
     }
@@ -69,7 +69,7 @@ struct PersonModel {
 
         let name = names.randomElement() ?? "John Doe"
         let age = Int.random(in: 18...70)
-        let link = URL(string: "https://example.com/\(name.lowercased())")!
+        let link = URL(string: "https://example.com/\(name.lowercased())")
 
         let currentYear = Calendar.current.component(.year, from: Date())
         let birthYear = currentYear - age
@@ -96,7 +96,7 @@ struct PersonModel {
         let planets: [Planet] = [.mercury, .venus, .earth, .mars, .jupiter, .saturn, .uranus, .neptune]
 
         let age = Int.random(in: 18...70)
-        let link = URL(string: "https://example.com/\(person.name.lowercased())")!
+        let link = URL(string: "https://example.com/\(person.name.lowercased())")
 
         let currentYear = Calendar.current.component(.year, from: Date())
         let birthYear = currentYear - age
