@@ -11,7 +11,7 @@ import SwiftUI
 struct DataLabApp: App {
     var body: some Scene {
         WindowGroup {
-            MainView()
+            MainView(viewModel: MainViewModel())
         }
     }
 }

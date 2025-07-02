@@ -8,17 +8,21 @@
 import SwiftUI
 
 struct MainView: View {
-    @State private var persons: [Person] = Person.mok
+    private var viewModel: MainViewModel
+
+    init(viewModel: MainViewModel) {
+        self.viewModel = viewModel
+    }
 
     var body: some View {
         VStack {
             Button {
-
+                viewModel.addNewPerson()
             } label: {
                 Image(systemName: "plus")
             }
 
-            List(persons, id: \.id) { person in
+            List(viewModel.persons, id: \.id) { person in
                 VStack {
                     HStack {
                         Text(person.name)
@@ -37,14 +41,14 @@ struct MainView: View {
                 }
                 .swipeActions(edge: .trailing) {
                     Button(role: .destructive) {
-
+                        viewModel.removePerson(at: person)
                     } label: {
                         Label("Удалить", systemImage: "trash")
                     }
                 }
                 .swipeActions(edge: .leading) {
                     Button {
-
+                        viewModel.editPerson(person)
                     } label: {
                         Label("Редактировать", systemImage: "pencil")
                     }
@@ -56,5 +60,5 @@ struct MainView: View {
 }
 
 #Preview {
-    MainView()
+    MainView(viewModel: MainViewModel())
 }

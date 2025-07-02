@@ -7,17 +7,20 @@
 
 import Foundation
 
-struct Person: Identifiable {
-    var name: String
-    var age: Int
-    var link: URL
-    var birthday: Date
-    var isStudent: Bool
-    var planet: Planet
+struct PersonModel {
 
-    var id: UUID = UUID()
+    struct Person: Identifiable, Equatable {
+        var name: String
+        var age: Int
+        var link: URL
+        var birthday: Date
+        var isStudent: Bool
+        var planet: Planet
 
-    static var mok: [Person] {
+        var id: UUID = UUID()
+    }
+
+    var mok: [Person] {
         [Person(
             name: "Alice",
             age: 28,
@@ -58,5 +61,60 @@ struct Person: Identifiable {
             isStudent: false,
             planet: .saturn
         )]
+    }
+
+    func generateRandom() -> Person {
+        let names = ["Alice", "Bob", "Clara", "David", "Eva", "Frank", "Grace", "Helen", "Ivan", "Julia"]
+        let planets: [Planet] = [.mercury, .venus, .earth, .mars, .jupiter, .saturn, .uranus, .neptune]
+
+        let name = names.randomElement() ?? "John Doe"
+        let age = Int.random(in: 18...70)
+        let link = URL(string: "https://example.com/\(name.lowercased())")!
+
+        let currentYear = Calendar.current.component(.year, from: Date())
+        let birthYear = currentYear - age
+        let birthMonth = Int.random(in: 1...12)
+        let birthDay = Int.random(in: 1...28)
+        let birthday = Calendar.current.date(from: DateComponents(year: birthYear, month: birthMonth, day: birthDay))!
+
+        let isStudent = Bool.random()
+        let planet = planets.randomElement()!
+
+        let person = Person(
+            name: name,
+            age: age,
+            link: link,
+            birthday: birthday,
+            isStudent: isStudent,
+            planet: planet
+        )
+
+        return person
+    }
+
+    func mutate(_ person: Person) -> Person {
+        let planets: [Planet] = [.mercury, .venus, .earth, .mars, .jupiter, .saturn, .uranus, .neptune]
+
+        let age = Int.random(in: 18...70)
+        let link = URL(string: "https://example.com/\(person.name.lowercased())")!
+
+        let currentYear = Calendar.current.component(.year, from: Date())
+        let birthYear = currentYear - age
+        let birthMonth = Int.random(in: 1...12)
+        let birthDay = Int.random(in: 1...28)
+        let birthday = Calendar.current.date(from: DateComponents(year: birthYear, month: birthMonth, day: birthDay))!
+
+        let isStudent = Bool.random()
+        let planet = planets.randomElement()!
+
+        return Person(
+            name: person.name,
+            age: age,
+            link: link,
+            birthday: birthday,
+            isStudent: isStudent,
+            planet: planet,
+            id: person.id          
+        )
     }
 }
