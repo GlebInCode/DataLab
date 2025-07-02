@@ -8,21 +8,21 @@
 import Foundation
 import RealmSwift
 
-class PlanetObject: Object {
+class PlanetObjectR: Object {
     @Persisted(primaryKey: true) var name: String?
 }
 
-class PersonObject: Object {
+class PersonObjectR: Object {
     @Persisted(primaryKey: true) var id: UUID
     @Persisted var name: String
     @Persisted var age: Int?
     @Persisted var link: String?
     @Persisted var birthday: Date?
     @Persisted var isStudent: Bool?
-    @Persisted var planet: PlanetObject?
+    @Persisted var planet: PlanetObjectR?
 }
 
-extension PlanetObject {
+extension PlanetObjectR {
     convenience init(from planet: Planet?) {
         self.init()
         self.name = planet?.rawValue
@@ -34,7 +34,7 @@ extension PlanetObject {
     }
 }
 
-extension PersonObject {
+extension PersonObjectR {
     convenience init(from person: PersonModel.Person) {
         self.init()
         self.id = person.id
@@ -43,7 +43,7 @@ extension PersonObject {
         self.link = person.link?.absoluteString
         self.birthday = person.birthday
         self.isStudent = person.isStudent
-        self.planet = PlanetObject(from: person.planet)
+        self.planet = PlanetObjectR(from: person.planet)
     }
 
     var toModel: PersonModel.Person {
