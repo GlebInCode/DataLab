@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct DataLabApp: App {
+
     var body: some Scene {
         WindowGroup {
             MainView(viewModel: MainViewModel())
         }
+        .modelContainer(for: [PersonObjectSD.self, PlanetObjectSD.self])
     }
 }

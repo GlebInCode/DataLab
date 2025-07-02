@@ -8,14 +8,6 @@
 import Foundation
 import RealmSwift
 
-protocol ServiceProtocol {
-    var delegate: ServiceDelegate? { get set }
-    func save(_ person: PersonModel.Person)
-    func delete(_ person: PersonModel.Person)
-    func fetchAllPersons() -> [PersonModel.Person]
-    func update(_ person: PersonModel.Person)
-}
-
 final class RealmService: ServiceProtocol {
     private let realm: Realm
     weak var delegate: ServiceDelegate?
@@ -25,7 +17,7 @@ final class RealmService: ServiceProtocol {
     }
 
     func save(_ person: PersonModel.Person) {
-        let personObject = PersonObject(from: person)
+        let personObject = PersonObjectR(from: person)
 
         try! realm.write {
             realm.add(personObject, update: .modified)
@@ -34,7 +26,7 @@ final class RealmService: ServiceProtocol {
     }
 
     func delete(_ person: PersonModel.Person) {
-        guard let obj = realm.object(ofType: PersonObject.self, forPrimaryKey: person.id) else { return }
+        guard let obj = realm.object(ofType: PersonObjectR.self, forPrimaryKey: person.id) else { return }
 
         try! realm.write {
             realm.delete(obj)
@@ -43,11 +35,11 @@ final class RealmService: ServiceProtocol {
     }
 
     func fetchAllPersons() -> [PersonModel.Person] {
-        realm.objects(PersonObject.self).compactMap { $0.toModel }
+        realm.objects(PersonObjectR.self).compactMap { $0.toModel }
     }
 
     func update(_ person: PersonModel.Person) {
-        guard let existingObject = realm.object(ofType: PersonObject.self, forPrimaryKey: person.id) else { return }
+        guard let existingObject = realm.object(ofType: PersonObjectR.self, forPrimaryKey: person.id) else { return }
 
         try! realm.write {
             existingObject.name = person.name
@@ -57,10 +49,10 @@ final class RealmService: ServiceProtocol {
             existingObject.isStudent = person.isStudent
 
             if let planetName = person.planet?.rawValue {
-                if let existingPlanet = realm.object(ofType: PlanetObject.self, forPrimaryKey: planetName) {
+                if let existingPlanet = realm.object(ofType: PlanetObjectR.self, forPrimaryKey: planetName) {
                     existingObject.planet = existingPlanet
                 } else {
-                    let newPlanet = PlanetObject()
+                    let newPlanet = PlanetObjectR()
                     newPlanet.name = planetName
                     realm.add(newPlanet)
                     existingObject.planet = newPlanet
